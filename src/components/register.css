@@ -1,0 +1,46 @@
+.register-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f8f9fa;
+  }
+  
+  .register-card {
+    border-radius: 25px;
+    padding: 20px;
+    display: flex;
+    flex-direction: row; /* Asegúrate de que la dirección sea fila */
+    align-items: center;
+  }
+  
+  .register-image {
+    max-width: 40%; /* Ajusta este valor según sea necesario */
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
+  }
+  
+  .register-header {
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+  }
+  
+  .register-form {
+    width: 100%;
+  }
+  
+  .register-input {
+    margin-bottom: 1rem;
+  }
+  
+  .register-checkbox {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  
+  .register-btn {
+    width: 100%;
+  }
+  
