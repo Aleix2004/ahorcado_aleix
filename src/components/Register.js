@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { auth, createUserWithEmailAndPassword } from './firebase'; // Asegúrate de que la ruta sea correcta
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -45,16 +45,9 @@ const Register = () => {
     }
 
     try {
-      const response = await axios.post('https://your-api-endpoint/register', {
-        username,
-        password,
-      });
-
-      if (response.data.success) {
-        navigate('/login');
-      } else {
-        setError('Registration failed');
-      }
+      // Registra un nuevo usuario con Firebase Authentication
+      await createUserWithEmailAndPassword(auth, username, password);
+      navigate('/login');
     } catch (error) {
       setError('An error occurred during registration');
     }

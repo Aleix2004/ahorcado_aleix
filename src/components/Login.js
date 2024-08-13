@@ -1,6 +1,8 @@
+// src/components/Login.js
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { auth, signInWithEmailAndPassword } from './firebase';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -15,13 +17,13 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { motion } from 'framer-motion';
 
 const Login = () => {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const handleUsernameChange = (e) => {
-    setUsername(e.target.value);
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
   };
 
   const handlePasswordChange = (e) => {
@@ -33,18 +35,11 @@ const Login = () => {
     setError('');
 
     try {
-      const response = await axios.post('https://your-api-endpoint/login', {
-        username,
-        password,
-      });
-
-      if (response.data.success) {
-        navigate('/protected');
-      } else {
-        setError('Invalid username or password');
-      }
+      // Inicia sesión con Firebase Authentication
+      await signInWithEmailAndPassword(auth, email, password);
+      navigate('/home');  // Asegúrate de que coincida con la ruta en App.js
     } catch (error) {
-      setError('An error occurred during login');
+      setError('Failed to sign in. Please check your credentials.');
     }
   };
 
@@ -72,20 +67,20 @@ const Login = () => {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            Sign In
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
               margin="normal"
               required
               fullWidth
-              id="username"
-              label="Username"
-              name="username"
-              autoComplete="username"
+              id="email"
+              label="Email Address"
+              name="email"
+              autoComplete="email"
               autoFocus
-              value={username}
-              onChange={handleUsernameChange}
+              value={email}
+              onChange={handleEmailChange}
             />
             <TextField
               margin="normal"
@@ -109,6 +104,11 @@ const Login = () => {
               Sign In
             </Button>
             <Grid container>
+              <Grid item xs>
+                <Link href="#" variant="body2">
+                  Forgot password?
+                </Link>
+              </Grid>
               <Grid item>
                 <Link href="/register" variant="body2">
                   {"Don't have an account? Sign Up"}
