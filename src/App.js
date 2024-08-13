@@ -1,9 +1,11 @@
 // src/App.js
+
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Login from './components/Login';
 import Register from './components/Register';
-import HomePage from './components/Homepage'; // Asegúrate de que esté correctamente importado
+import HomePage from './components/Homepage';
+import Hangman from './components/Hangman'; // Importa el juego del Ahorcado
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 
@@ -15,6 +17,7 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/home" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
+          <Route path="/hangman" element={<ProtectedRoute><Hangman /></ProtectedRoute>} /> 
           <Route path="/" element={<Navigate to="/login" />} />
         </Routes>
       </Router>
