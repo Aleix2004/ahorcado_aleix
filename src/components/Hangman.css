@@ -1,43 +1,108 @@
-/* src/Hangman.css */
+/* src/components/Hangman.css */
 
-.App-header {
+body {
+  margin: 0;
+  font-family: 'Comic Sans MS', 'Arial', sans-serif;
+  background: src('Messi.png') no-repeat center center fixed;
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.hangman {
   text-align: center;
-  background-color: #282c34;
-  padding: 40px 0;
-  color: white;
+  color: #333;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
-.Word {
+h1 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  color: limegreen;
+  text-shadow: 2px 2px 4px #000000;
+}
+
+.word-and-drawing {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.word {
   font-size: 2rem;
-  margin-top: 20px;
-  letter-spacing: 2px;
+  letter-spacing: 0.4rem;
+  flex: 1;
+  text-align: left;
+  margin-right: 20px;
+  color: #FF6347;
+  text-shadow: 1px 1px 2px #000000;
 }
 
-.Alphabet {
+.alphabet {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  margin-top: 30px;
+  gap: 8px;
+  margin-bottom: 20px;
 }
 
-.Alphabet button {
-  background-color: #61dafb;
-  color: white;
-  border: none;
+.alphabet button {
+  font-size: 1.5rem;
+  padding: 10px 15px;
   margin: 5px;
-  width: 40px;
-  height: 40px;
-  border-radius: 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #000;
+  color: white;
   cursor: pointer;
-  font-size: 1.2rem;
-  transition: background-color 0.3s;
+  transition: transform 0.2s ease;
 }
 
-.Alphabet button:hover {
-  background-color: #4fa8d4;
+.alphabet button:hover {
+  transform: scale(1.1);
+  background-color: #555;
 }
 
-.Alphabet button:disabled {
-  background-color: #ccc;
+.alphabet button:disabled {
+  background-color: #888;
   cursor: not-allowed;
+}
+
+.hangman-drawing {
+  max-width: 250px;
+  max-height: 250px;
+}
+
+p {
+  font-size: 1.2rem;
+  margin-top: 10px;
+}
+
+.game-over {
+  margin-top: 20px;
+}
+
+.game-over button {
+  font-size: 1.5rem;
+  padding: 10px 20px;
+  margin-top: 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: limegreen;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.game-over button:hover {
+  background-color: #32CD32;
 }

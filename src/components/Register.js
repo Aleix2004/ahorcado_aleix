@@ -3,6 +3,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { auth, createUserWithEmailAndPassword } from './firebase'; // Asegúrate de que la ruta sea correcta
+import { db } from '../firebaseConfig'; // Importa la configuración de Firebase
+import { setDoc, doc } from 'firebase/firestore'; // Importa las funciones de Firestore
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -46,7 +48,16 @@ const Register = () => {
 
     try {
       // Registra un nuevo usuario con Firebase Authentication
-      await createUserWithEmailAndPassword(auth, username, password);
+      const userCredential = await createUserWithEmailAndPassword(auth, username, password);
+      const user = userCredential.user;
+
+      // Crea un documento en Firestore con el ID del usuario y su nombre de usuario
+      await setDoc(doc(db, "users", user.uid), {
+        username: username,
+        email: user.email,
+        createdAt: new Date()
+      });
+
       navigate('/login');
     } catch (error) {
       setError('An error occurred during registration');
