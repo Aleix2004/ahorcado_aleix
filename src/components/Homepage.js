@@ -1,19 +1,16 @@
 // src/components/HomePage.js
 
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+import Hangman from './Hangman'; // Importa tu componente de juego del ahorcado
 
 const HomePage = () => {
-  const navigate = useNavigate();
-
-  const goToHangman = () => {
-    navigate('/hangman');
-  };
+  const { currentUser } = useAuth();
 
   return (
     <div>
-      <h1>Welcome to the HomePage</h1>
-      <button onClick={goToHangman}>Play Hangman</button> {/* Botón para acceder al juego */}
+      <h1>Bienvenido, {currentUser?.username || "usuario"}!</h1>
+      <Hangman /> {/* Renderiza tu juego del ahorcado aquí */}
     </div>
   );
 };

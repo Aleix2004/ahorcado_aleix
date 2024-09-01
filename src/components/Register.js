@@ -2,9 +2,9 @@
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { auth, createUserWithEmailAndPassword } from './firebase'; // Asegúrate de que la ruta sea correcta
-import { db } from '../firebaseConfig'; // Importa la configuración de Firebase
-import { setDoc, doc } from 'firebase/firestore'; // Importa las funciones de Firestore
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { setDoc, doc } from 'firebase/firestore';
+import { auth, db } from '../firebaseConfig';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -20,22 +20,11 @@ import { motion } from 'framer-motion';
 
 const Register = () => {
   const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
-
-  const handleUsernameChange = (e) => {
-    setUsername(e.target.value);
-  };
-
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-  };
-
-  const handleConfirmPasswordChange = (e) => {
-    setConfirmPassword(e.target.value);
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -48,13 +37,13 @@ const Register = () => {
 
     try {
       // Registra un nuevo usuario con Firebase Authentication
-      const userCredential = await createUserWithEmailAndPassword(auth, username, password);
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
-      // Crea un documento en Firestore con el ID del usuario y su nombre de usuario
+      // Crea un documento en Firestore con el ID del usuario, su nombre de usuario y email
       await setDoc(doc(db, "users", user.uid), {
         username: username,
-        email: user.email,
+        email: email,
         createdAt: new Date()
       });
 
@@ -101,7 +90,18 @@ const Register = () => {
               autoComplete="username"
               autoFocus
               value={username}
-              onChange={handleUsernameChange}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Email Address"
+              name="email"
+              autoComplete="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
             <TextField
               margin="normal"
@@ -113,7 +113,7 @@ const Register = () => {
               id="password"
               autoComplete="new-password"
               value={password}
-              onChange={handlePasswordChange}
+              onChange={(e) => setPassword(e.target.value)}
             />
             <TextField
               margin="normal"
@@ -125,7 +125,7 @@ const Register = () => {
               id="confirmPassword"
               autoComplete="new-password"
               value={confirmPassword}
-              onChange={handleConfirmPasswordChange}
+              onChange={(e) => setConfirmPassword(e.target.value)}
             />
             {error && <Alert severity="error">{error}</Alert>}
             <Button

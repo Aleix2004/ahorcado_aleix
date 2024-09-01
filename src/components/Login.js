@@ -2,7 +2,9 @@
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { auth, signInWithEmailAndPassword } from './firebase';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { getDoc, doc } from 'firebase/firestore';
+import { auth, db } from '../firebaseConfig';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -22,22 +24,24 @@ const Login = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-  };
-
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
 
     try {
-      // Inicia sesión con Firebase Authentication
-      await signInWithEmailAndPassword(auth, email, password);
-      navigate('/home');  // Asegúrate de que coincida con la ruta en App.js
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      // Obtener el documento del usuario en Firestore
+      const userDoc = await getDoc(doc(db, "users", user.uid));
+
+      if (userDoc.exists()) {
+        const userData = userDoc.data();
+        alert(`Bienvenido, ${userData.username}!`);
+        navigate('/home');
+      } else {
+        setError('User data not found');
+      }
     } catch (error) {
       setError('Failed to sign in. Please check your credentials.');
     }
@@ -80,7 +84,7 @@ const Login = () => {
               autoComplete="email"
               autoFocus
               value={email}
-              onChange={handleEmailChange}
+              onChange={(e) => setEmail(e.target.value)}
             />
             <TextField
               margin="normal"
@@ -92,7 +96,7 @@ const Login = () => {
               id="password"
               autoComplete="current-password"
               value={password}
-              onChange={handlePasswordChange}
+              onChange={(e) => setPassword(e.target.value)}
             />
             {error && <Alert severity="error">{error}</Alert>}
             <Button

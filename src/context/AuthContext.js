@@ -1,9 +1,10 @@
 // src/context/AuthContext.js
-import React, { useContext, useState, useEffect } from 'react';
-import { auth } from '../firebaseConfig';
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import { auth, db } from '../firebaseConfig';
 import { onAuthStateChanged } from 'firebase/auth';
+import { getDoc, doc } from 'firebase/firestore';
 
-const AuthContext = React.createContext();
+const AuthContext = createContext();
 
 export const useAuth = () => {
   return useContext(AuthContext);
@@ -14,8 +15,13 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setCurrentUser(user);
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        const userDoc = await getDoc(doc(db, "users", user.uid));
+        setCurrentUser({ ...user, ...userDoc.data() });
+      } else {
+        setCurrentUser(null);
+      }
       setLoading(false);
     });
 
@@ -31,5 +37,4 @@ export const AuthProvider = ({ children }) => {
       {!loading && children}
     </AuthContext.Provider>
   );
-  
 };
