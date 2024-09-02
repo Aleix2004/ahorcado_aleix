@@ -4,6 +4,7 @@ import Word from './Word';
 import Alphabet from './Alphabet';
 import HangmanDrawing from './HangmanDrawing';
 import DifficultySelector from './DifficultySelector';
+import UserProfile from './UserProfile'; // Importa el componente UserProfile
 import './Hangman.css';
 
 const Hangman = () => {
@@ -16,6 +17,7 @@ const Hangman = () => {
     const [error, setError] = useState('');
     const [gameOver, setGameOver] = useState(false);
     const [victory, setVictory] = useState(false);
+    const [showProfile, ] = useState(false); // Estado para mostrar el perfil
 
     useEffect(() => {
         if (!difficulty) return;
@@ -105,6 +107,8 @@ const Hangman = () => {
     return (
         <div className="hangman">
             <h1>Juego del ahorcado</h1>
+           
+            {showProfile && <UserProfile />} {/* Mostrar el perfil del usuario */}
             <div className="word-and-drawing">
                 <Word word={word} guesses={guesses} />
                 <HangmanDrawing wrongGuesses={wrongGuesses} maxWrongGuesses={maxWrongGuesses} />

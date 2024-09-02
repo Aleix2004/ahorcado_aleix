@@ -1,0 +1,50 @@
+/* src/UserProfile.css */
+
+.user-profile {
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    margin: 0 auto;
+  }
+  
+  .profile-item {
+    margin-bottom: 15px;
+  }
+  
+  .profile-item label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  .profile-item input {
+    width: 100%;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  
+  button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s;
+    margin-top: 10px;
+    width: 100%;
+  }
+  
+  button:hover {
+    background-color: #218838;
+  }
+  
+  .error {
+    color: red;
+    margin-bottom: 10px;
+  }
+  

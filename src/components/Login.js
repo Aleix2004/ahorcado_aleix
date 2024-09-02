@@ -35,6 +35,7 @@ const Login = () => {
       // Obtener el documento del usuario en Firestore
       const userDoc = await getDoc(doc(db, "users", user.uid));
 
+    
       if (userDoc.exists()) {
         const userData = userDoc.data();
         alert(`Bienvenido, ${userData.username}!`);

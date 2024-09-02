@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { setDoc, doc } from 'firebase/firestore';
 import { auth, db } from '../firebaseConfig';
 import Avatar from '@mui/material/Avatar';
@@ -40,16 +40,27 @@ const Register = () => {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
+      // Foto de perfil predeterminada
+      const defaultPhotoURL = "https://via.placeholder.com/150"; // Puedes cambiar esta URL a la imagen que desees usar como predeterminada
+
+      // Actualiza el perfil del usuario con el nombre de usuario y la foto de perfil
+      await updateProfile(user, {
+        displayName: username,
+        photoURL: defaultPhotoURL,
+      });
+
       // Crea un documento en Firestore con el ID del usuario, su nombre de usuario y email
       await setDoc(doc(db, "users", user.uid), {
         username: username,
         email: email,
+        photoURL: defaultPhotoURL,
         createdAt: new Date()
       });
 
       navigate('/login');
     } catch (error) {
       setError('An error occurred during registration');
+      console.error('Error during registration:', error); // Agrega un log para facilitar el debugging
     }
   };
 

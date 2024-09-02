@@ -1,16 +1,34 @@
 /* src/Hangman.css */
 
-.App-header {
-  text-align: center;
-  background-color: #282c34;
-  padding: 40px 0;
-  color: white;
+.hangman {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.word-and-drawing {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 20px;
 }
 
 .Word {
   font-size: 2rem;
   margin-top: 20px;
   letter-spacing: 2px;
+}
+
+.HangmanDrawing {
+  width: 50%;
 }
 
 .Alphabet {
@@ -40,4 +58,29 @@
 .Alphabet button:disabled {
   background-color: #ccc;
   cursor: not-allowed;
+}
+
+.game-over {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.game-over p {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.game-over button {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
+
+.game-over button:hover {
+  background-color: #218838;
 }
