@@ -1,6 +1,4 @@
-// src/components/HomePage.js
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import Hangman from './Hangman';
 import UserProfile from './UserProfile';
@@ -13,6 +11,26 @@ const HomePage = () => {
   const toggleProfileMenu = () => {
     setShowProfileMenu(!showProfileMenu);
   };
+
+  useEffect(() => {
+    // Crear el fondo difuminado cuando se muestra el menú de perfil
+    if (showProfileMenu) {
+      const blurBackground = document.createElement('div');
+      blurBackground.className = 'blur-background';
+      document.body.appendChild(blurBackground);
+
+      // Cierra el menú de perfil cuando se hace clic en el fondo difuminado
+      blurBackground.addEventListener('click', () => {
+        setShowProfileMenu(false);
+      });
+
+      // Limpiar el efecto cuando el componente se desmonte o el estado cambie
+      return () => {
+        blurBackground.removeEventListener('click', () => setShowProfileMenu(false));
+        document.body.removeChild(blurBackground);
+      };
+    }
+  }, [showProfileMenu]);
 
   return (
     <div className="container">

@@ -1,50 +1,82 @@
-/* src/UserProfile.css */
+/* src/components/UserProfile.css */
 
 .user-profile {
-    padding: 20px;
-    background-color: #f8f9fa;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    max-width: 400px;
-    margin: 0 auto;
-  }
-  
-  .profile-item {
-    margin-bottom: 15px;
-  }
-  
-  .profile-item label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-  }
-  
-  .profile-item input {
-    width: 100%;
-    padding: 8px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-  }
-  
-  button {
-    background-color: #28a745;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: background-color 0.3s;
-    margin-top: 10px;
-    width: 100%;
-  }
-  
-  button:hover {
-    background-color: #218838;
-  }
-  
-  .error {
-    color: red;
-    margin-bottom: 10px;
-  }
-  
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 350px;
+  padding: 20px;
+  text-align: center;
+  z-index: 1000;
+}
+
+.user-profile h2 {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.user-profile .profile-item {
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+.user-profile .profile-item label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.user-profile .profile-item input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.user-profile .update-btn,
+.user-profile .password-btn,
+.user-profile .logout-btn {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+.user-profile .update-btn {
+  background-color: #007bff;
+}
+
+.user-profile .update-btn:hover {
+  background-color: #0056b3;
+}
+
+.user-profile .password-btn {
+  background-color: #28a745;
+}
+
+.user-profile .password-btn:hover {
+  background-color: #218838;
+}
+
+.user-profile .logout-btn {
+  background-color: #dc3545;
+}
+
+.user-profile .logout-btn:hover {
+  background-color: #c82333;
+}
+
+.user-profile .error {
+  color: red;
+  font-size: 0.9rem;
+  margin-bottom: 15px;
+}

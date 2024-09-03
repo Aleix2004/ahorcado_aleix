@@ -1,26 +1,30 @@
 /* src/HomePage.css */
 
 .container {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    position: relative;
-  }
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100vw; /* Ajustar para ocupar toda la pantalla */
+  position: relative;
+  justify-content: center;
+  align-items: center;
+}
   
   .header {
     background-color: #6200ea;
     color: white;
-    padding: 20px;
+    padding: 0%;
     text-align: center;
     position: relative;
   }
   
   .profile-container {
     position: absolute;
-    top: 20px;
-    right: 20px;
+    top: 10px;
+    right: 10px;
   }
-  
+
+
   .profile-picture {
     border-radius: 50%;
     width: 50px;
@@ -28,18 +32,7 @@
     cursor: pointer;
   }
   
-  .profile-menu {
-    position: absolute;
-    top: 70px;
-    right: 0;
-    background-color: white;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-    width: 250px;
-    padding: 10px;
-  }
+ 
   
   .main-content {
     flex: 1;
@@ -49,13 +42,22 @@
   }
   
   .hangman-container {
+    max-width: 90%; /* Reducción del ancho máximo para mejor ajuste */
+    max-height: 90%; /* Reducción del alto máximo para mejor ajuste */
+    overflow-y: auto;
     background-color: white;
     border-radius: 8px;
     padding: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    max-width: 800px;
+  }
+
+  .hangman {
+    max-width: 600px; /* Ancho máximo ajustado para mejor ajuste */
     margin: 0 auto;
-    overflow-y: auto;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   }
   
   .footer {
@@ -64,4 +66,59 @@
     padding: 10px;
     text-align: center;
   }
+
+  .blur-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
+    backdrop-filter: blur(5px); /* Efecto de desenfoque */
+    z-index: 999; /* Asegúrate de que esté por encima de otros elementos */
+  }
   
+  /* Opcional: Añadir estilos para que el menú de perfil aparezca centrado */
+  .profile-menu {
+    position: fixed; /* Fijo para que esté siempre centrado */
+    top: 50%; /* Centrado verticalmente */
+    left: 50%; /* Centrado horizontalmente */
+    transform: translate(-50%, -50%); /* Ajuste para centrar el contenido */
+    background-color: white; /* Fondo blanco */
+    border: 1px solid #ccc; /* Borde suave */
+    border-radius: 15px; /* Bordes redondeados similares a la imagen */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra para darle profundidad */
+    z-index: 1000; /* Asegúrate de que esté por encima del fondo difuminado */
+    width: 300px; /* Ancho similar al del formulario de registro */
+    padding: 20px; /* Espaciado interno para mantener el contenido separado del borde */
+    text-align: center; /* Centramos el texto */
+  }
+
+  .profile-menu input[type="text"],
+.profile-menu input[type="password"],
+.profile-menu input[type="email"],
+.profile-menu button {
+  width: 100%; /* Ancho completo */
+  padding: 10px; /* Espaciado interno */
+  margin-bottom: 10px; /* Espaciado entre los elementos */
+  border-radius: 5px; /* Bordes redondeados */
+  border: 1px solid #ccc; /* Borde suave */
+}
+.profile-menu button {
+  background-color: #007bff; /* Color azul similar al botón de registro */
+  color: white; /* Texto blanco */
+  border: none; /* Sin borde adicional */
+  cursor: pointer; /* Cambiar el cursor al pasar sobre el botón */
+  transition: background-color 0.3s ease; /* Transición suave al pasar el mouse */
+}
+
+.profile-menu button:hover {
+  background-color: #0056b3; /* Color más oscuro al pasar el mouse */
+}
+
+/* Opcional: estilo para el título */
+.profile-menu h2 {
+  font-size: 1.5rem; /* Tamaño de fuente más grande */
+  margin-bottom: 20px; /* Espacio debajo del título */
+  color: #333; /* Color oscuro para el título */
+}

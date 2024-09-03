@@ -6,10 +6,7 @@ import { updateProfile, updatePassword } from 'firebase/auth';
 import { auth, db } from '../firebaseConfig';
 import { doc, updateDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
-
-
-
-
+import './UserProfile.css';
 
 const UserProfile = () => {
   const { currentUser } = useAuth();
@@ -85,7 +82,7 @@ const UserProfile = () => {
         />
       </div>
 
-      <button onClick={handleUpdateProfile}>Update Profile</button>
+      <button onClick={handleUpdateProfile} className="update-btn">Update Profile</button>
 
       <div className="profile-item">
         <label>New Password: </label>
@@ -97,9 +94,9 @@ const UserProfile = () => {
         />
       </div>
 
-      <button onClick={handleChangePassword}>Change Password</button>
+      <button onClick={handleChangePassword} className="password-btn">Change Password</button>
 
-      <button onClick={handleLogout}>Log Out</button>
+      <button onClick={handleLogout} className="logout-btn">Log Out</button>
     </div>
   );
 };
