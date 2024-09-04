@@ -1,6 +1,6 @@
 // src/components/UserProfile.js
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { updateProfile, updatePassword } from 'firebase/auth';
 import { auth, db } from '../firebaseConfig';
@@ -16,16 +16,20 @@ const UserProfile = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (!currentUser) {
+      navigate('/login', { replace: true });
+    }
+  }, [currentUser, navigate]);
+
   const handleUpdateProfile = async () => {
     setError('');
     try {
-      // Actualizar perfil en Firebase Authentication
       await updateProfile(auth.currentUser, {
         displayName: newUsername || currentUser.displayName,
         photoURL: newPhotoURL || currentUser.photoURL,
       });
 
-      // Actualizar perfil en Firestore
       const userDocRef = doc(db, 'users', currentUser.uid);
       await updateDoc(userDocRef, {
         username: newUsername || currentUser.displayName,
