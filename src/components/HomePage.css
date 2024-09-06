@@ -17,9 +17,8 @@
   color: black;
   font-size: 20px;
   font-weight: bold;
-  padding: 20px;
+  padding: 5px;
   text-align: center;
-  /**text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); /* Sombra en el texto para que resalte */
 }
 
 .profile-container {
@@ -44,21 +43,19 @@
   align-items: center;
 }
 
-.hangman-container {
-  border-radius: 15px;
-  padding: 20px;
-  text-align: center;
-}
 
 h2 {
   font-size: 1.8rem;
+  font-family: 'Comic Sans MS', 'Arial', sans-serif;
   color: #000000;
+  text-align: center;
   margin-bottom: 20px;
  
 }
 
 .difficulty-button {
   padding: 10px 20px;
+  font-family: 'Comic Sans MS', 'Arial', sans-serif;
   margin: 10px;
   border: none;
   border-radius: 10px;
@@ -81,6 +78,7 @@ h2 {
 }
 
 .attempt-info {
+  text-align: center;
   font-size: 1.2rem;
   color: #ffffff;
   margin-top: 10px;

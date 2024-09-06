@@ -2,18 +2,29 @@
 
 .user-profile {
   position: fixed;
-  top: 50%;
+  font-family: 'Comic Sans MS', 'Arial', sans-serif;
+  top: 55%;
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: #6200ea;
   border: 1px solid #000000;
   border-radius: 15px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  
   width: 40%;
   padding: 10px;
   text-align: center;
-  z-index: 1000;
+  z-index: 1000; 
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5); /* Oscurece ligeramente el fondo */
+  backdrop-filter: blur(10px); /* Aplica el blur */
+  z-index: 999; /* Debe estar debajo del perfil pero sobre el resto */
 }
 
 .user-profile h2 {
@@ -35,6 +46,7 @@
 
 .user-profile .profile-item input {
   width: 100%;
+  font-family: 'Comic Sans MS', 'Arial', sans-serif;
   padding: 10px;
   border-radius: 5px;
   border: 1px solid #ccc;
@@ -44,6 +56,7 @@
 .user-profile .password-btn,
 .user-profile .logout-btn {
   width: 100%;
+  font-family: 'Comic Sans MS', 'Arial', sans-serif;
   padding: 10px;
   margin-bottom: 10px;
   border-radius: 5px;

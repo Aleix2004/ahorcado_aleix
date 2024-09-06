@@ -50,6 +50,7 @@
   transition: background-color 0.3s ease;
 }
 
+
 .register-btn:hover {
   background-color: #6a00f4; /* Al pasar el ratón, cambia a púrpura */
 }

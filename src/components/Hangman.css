@@ -12,19 +12,38 @@ body {
   align-items: center;
 }
 
-.hangman {
-  text-align: center;
-  color: #333;
-  max-width: 75%;
-  margin: 0 auto;
-  padding: 20px;
-  border-radius: 15px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+canvas {
+  width: 8%;
+  height: auto;
+  max-width: 300px; /* Limitar el tamaño máximo del canvas */
+  margin: auto;
+  display: block;
 
 }
 
+#word {
+  font-size: 1.5rem; /* Reducir el tamaño de la palabra */
+}
+
+button {
+  font-size: 0.75rem; /* Reducir el tamaño de los botones del teclado */
+}
+
+.hangman { 
+  text-align: center;
+  color: #333;
+  max-width: 75%;
+  max-height: 75%;
+  margin: 0 auto;
+  margin-top: -3%;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
 h1 {
-  font-size: 2.5rem;
+  font-size: 1.5rem;
+  font-family: 'Comic Sans MS', 'Arial', sans-serif;
   margin-bottom: 20px;
   color: rgb(0, 0, 0);
   
@@ -40,6 +59,7 @@ h1 {
 
 .word {
   font-size: 2rem;
+  font-family: 'Comic Sans MS', 'Arial', sans-serif;
   letter-spacing: 0.4rem;
   flex: 1;
   text-align: left;
@@ -59,7 +79,8 @@ h1 {
 }
 
 .alphabet button {
-  font-size: 1.5rem;
+  font-size: 1rem;
+  font-family: 'Comic Sans MS', 'Arial', sans-serif;
   padding: 10px 15px;
   margin: 5px;
   border: none;
@@ -83,9 +104,11 @@ h1 {
 .HangmanDrawing {
   max-height: 100%;
   max-width: 100%;
+  border-color: #000;
 }
 
 p {
+  font-family: 'Comic Sans MS', 'Arial', sans-serif;
   font-size: 1.2rem;
   margin-top: 10px;
 }
@@ -96,6 +119,7 @@ p {
 
 .game-over button {
   font-size: 1.5rem;
+  font-family: 'Comic Sans MS', 'Arial', sans-serif;
   padding: 10px 20px;
   margin-top: 20px;
   border: none;
