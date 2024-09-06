@@ -5,37 +5,36 @@ body {
   font-family: 'Comic Sans MS', 'Arial', sans-serif;
   background: src('Messi.png') no-repeat center center fixed;
   background-size: cover;
-  height: 100vh; /* Ocupa toda la altura de la ventana */
+  height: 70%; /* Ocupa toda la altura de la ventana */
   overflow: hidden; /* Evita el scroll */
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-
-
 .hangman {
   text-align: center;
   color: #333;
-  max-width: 800px;
+  max-width: 75%;
   margin: 0 auto;
   padding: 20px;
-  background-color: rgba(255, 255, 255, 0.8);
   border-radius: 15px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+
 }
 
 h1 {
   font-size: 2.5rem;
   margin-bottom: 20px;
   color: rgb(0, 0, 0);
-  text-shadow: 2px 2px 4px #000000;
+  
 }
 
 .word-and-drawing {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-between; /* Aumenta el espacio entre el dibujo y la palabra */
   align-items: center;
+  width: 100%;
   margin-bottom: 20px;
 }
 
@@ -45,14 +44,16 @@ h1 {
   flex: 1;
   text-align: left;
   margin-right: 20px;
-  color: #FF6347;
+  color: #ffffff;
   text-shadow: 1px 1px 2px #000000;
 }
+
 
 .alphabet {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  margin-top: 1%;
   gap: 8px;
   margin-bottom: 10px;
 }
@@ -79,9 +80,9 @@ h1 {
   cursor: not-allowed;
 }
 
-.hangman-drawing {
-  max-width: 250px;
-  max-height: 250px;
+.HangmanDrawing {
+  max-height: 100%;
+  max-width: 100%;
 }
 
 p {

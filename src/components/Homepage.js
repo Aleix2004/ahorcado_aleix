@@ -35,7 +35,7 @@ const HomePage = () => {
   return (
     <div className="container">
       <header className="header">
-        <h1>Bienvenido, {currentUser?.displayName || "usuario"}!</h1> {/* Verificamos que el displayName esté presente */}
+        <h1> {currentUser?.displayName || "usuario"}!</h1> {/* Verificamos que el displayName esté presente */}
         <div className="profile-container">
           {currentUser?.photoURL && (
             <img

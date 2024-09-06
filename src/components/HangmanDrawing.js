@@ -1,29 +1,92 @@
-// src/components/HangmanDrawing.js
+import React, { useRef, useEffect } from 'react';
 
-import React from 'react';
+const HangmanDrawing = ({ wrongGuesses }) => {
+  const canvasRef = useRef(null);
 
-const HangmanDrawing = ({ wrongGuesses, maxWrongGuesses }) => {
-  const stages = [
-    <line key="base" x1="10" y1="140" x2="100" y2="140" />,
-    <line key="pole" x1="50" y1="140" x2="50" y2="20" />,
-    <line key="beam" x1="50" y1="20" x2="100" y2="20" />,
-    <line key="rope" x1="100" y1="20" x2="100" y2="40" />,
-    <circle key="head" cx="100" cy="50" r="10" />,
-    <line key="body" x1="100" y1="60" x2="100" y2="90" />,
-    <line key="left-arm" x1="100" y1="70" x2="90" y2="80" />,
-    <line key="right-arm" x1="100" y1="70" x2="110" y2="80" />,
-    <line key="left-leg" x1="100" y1="90" x2="90" y2="110" />,
-    <line key="right-leg" x1="100" y1="90" x2="110" y2="110" />
-  ];
+  // Función que dibuja el muñeco del ahorcado en función de los errores
+  const drawHangman = (ctx, wrongGuesses) => {
+    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height); // Limpiar el canvas
 
-  // Calcula cuántas partes del muñeco deben mostrarse según el número de intentos fallidos
-  const drawSteps = Math.floor((wrongGuesses / maxWrongGuesses) * stages.length);
+    // Dibuja partes según la cantidad de errores
+    if (wrongGuesses > 0) {
+      // Base
+      ctx.beginPath();
+      ctx.moveTo(10, 250);
+      ctx.lineTo(150, 250);
+      ctx.stroke();
+    }
+    if (wrongGuesses > 1) {
+      // Poste
+      ctx.beginPath();
+      ctx.moveTo(50, 250);
+      ctx.lineTo(50, 20);
+      ctx.stroke();
+    }
+    if (wrongGuesses > 2) {
+      // Viga
+      ctx.beginPath();
+      ctx.moveTo(50, 20);
+      ctx.lineTo(100, 20);
+      ctx.stroke();
+    }
+    if (wrongGuesses > 3) {
+      // Cuerda
+      ctx.beginPath();
+      ctx.moveTo(100, 20);
+      ctx.lineTo(100, 40);
+      ctx.stroke();
+    }
+    if (wrongGuesses > 4) {
+      // Cabeza
+      ctx.beginPath();
+      ctx.arc(100, 60, 10, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+    if (wrongGuesses > 5) {
+      // Cuerpo
+      ctx.beginPath();
+      ctx.moveTo(100, 70);
+      ctx.lineTo(100, 120);
+      ctx.stroke();
+    }
+    if (wrongGuesses > 6) {
+      // Brazo izquierdo
+      ctx.beginPath();
+      ctx.moveTo(100, 80);
+      ctx.lineTo(80, 100);
+      ctx.stroke();
+    }
+    if (wrongGuesses > 7) {
+      // Brazo derecho
+      ctx.beginPath();
+      ctx.moveTo(100, 80);
+      ctx.lineTo(120, 100);
+      ctx.stroke();
+    }
+    if (wrongGuesses > 8) {
+      // Pierna izquierda
+      ctx.beginPath();
+      ctx.moveTo(100, 120);
+      ctx.lineTo(80, 160);
+      ctx.stroke();
+    }
+    if (wrongGuesses > 9) {
+      // Pierna derecha
+      ctx.beginPath();
+      ctx.moveTo(100, 120);
+      ctx.lineTo(120, 160);
+      ctx.stroke();
+    }
+  };
 
-  return (
-    <svg height="150" width="120" style={{ marginLeft: '20px' }}>
-      {stages.slice(0, drawSteps)}
-    </svg>
-  );
+  // Hook useEffect para dibujar cada vez que el número de errores cambie
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+    drawHangman(ctx, wrongGuesses);
+  }, [wrongGuesses]); // El efecto se dispara cada vez que cambian los errores
+
+  return <canvas ref={canvasRef} width="200" height="300" />;
 };
 
 export default HangmanDrawing;

@@ -5,8 +5,8 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: white;
-  border: 1px solid #ccc;
+  background-color: #6200ea;
+  border: 1px solid #000000;
   border-radius: 15px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   
@@ -19,7 +19,7 @@
 .user-profile h2 {
   font-size: 1.5rem;
   margin-bottom: 20px;
-  color: #333;
+  color: #000000;
 }
 
 .user-profile .profile-item {
