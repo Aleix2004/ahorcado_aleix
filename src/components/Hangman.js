@@ -4,6 +4,9 @@ import Word from './Word';
 import Alphabet from './Alphabet';
 import HangmanDrawing from './HangmanDrawing';
 import DifficultySelector from './DifficultySelector';
+import { db, auth } from '../firebaseConfig'; // Importa Firebase Firestore y Auth
+import { doc, getDoc, setDoc } from 'firebase/firestore'; // Importa funciones de Firestore
+import { onAuthStateChanged } from 'firebase/auth'; // Importa onAuthStateChanged para escuchar la autenticación
 import './Hangman.css';
 
 const Hangman = () => {
@@ -17,8 +20,60 @@ const Hangman = () => {
   const [gameOver, setGameOver] = useState(false);
   const [victory, setVictory] = useState(false);
   const [timerEnabled, setTimerEnabled] = useState(false);
-  const [timerDuration, setTimerDuration] = useState(90); // Default to 1:30
+  const [timerDuration, setTimerDuration] = useState(90);
   const [timeLeft, setTimeLeft] = useState(0);
+
+  // Guarda el estado del juego en Firestore
+  const saveGameState = async (userId, state) => {
+    try {
+      const gameRef = doc(db, 'games', userId);
+      await setDoc(gameRef, state);
+      console.log("Estado del juego guardado:", state);
+    } catch (error) {
+      console.error("Error al guardar el estado del juego:", error);
+    }
+  };
+
+  // Cargar el estado del juego desde Firestore
+  const loadGameState = async (userId) => {
+    try {
+      const gameRef = doc(db, 'games', userId);
+      const gameSnapshot = await getDoc(gameRef);
+
+      if (gameSnapshot.exists()) {
+        const savedState = gameSnapshot.data();
+        setDifficulty(savedState.difficulty);
+        setWord(savedState.word);
+        setGuesses(savedState.guesses);
+        setWrongGuesses(savedState.wrongGuesses);
+        setMaxWrongGuesses(savedState.maxWrongGuesses);
+        setGameOver(savedState.gameOver);
+        setVictory(savedState.victory);
+        setTimerEnabled(savedState.timerEnabled);
+        setTimerDuration(savedState.timerDuration);
+        setTimeLeft(savedState.timeLeft);
+        console.log("Estado del juego cargado desde Firestore:", savedState);
+      } else {
+        console.log("No se encontró un estado guardado.");
+      }
+    } catch (error) {
+      console.error("Error al cargar el estado del juego:", error);
+    }
+  };
+
+  // Escuchar cambios de autenticación y cargar el estado del juego
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        console.log("Usuario autenticado:", user.uid);
+        loadGameState(user.uid);
+      } else {
+        console.log("No hay usuario autenticado.");
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   useEffect(() => {
     if (!difficulty) return;
@@ -69,10 +124,13 @@ const Hangman = () => {
 
   const handleGuess = (letter) => {
     if (gameOver) return;
-
+  
+    // Definimos remainingLetters antes de los condicionales
+    const remainingLetters = word.split('').filter(l => !guesses.includes(l));
+  
     if (word.includes(letter)) {
       setGuesses([...guesses, letter]);
-      const remainingLetters = word.split('').filter(l => !guesses.includes(l));
+  
       if (remainingLetters.length === 1 && remainingLetters[0] === letter) {
         setVictory(true);
         setGameOver(true);
@@ -80,11 +138,30 @@ const Hangman = () => {
     } else {
       setGuesses([...guesses, letter]);
       setWrongGuesses(wrongGuesses + 1);
+  
       if (wrongGuesses + 1 === maxWrongGuesses) {
         setGameOver(true);
       }
     }
+  
+    // Guardar el estado del juego después de cada cambio
+    const userId = auth.currentUser?.uid;
+    if (userId) {
+      saveGameState(userId, {
+        difficulty,
+        word,
+        guesses: [...guesses, letter],
+        wrongGuesses: wrongGuesses + 1,
+        maxWrongGuesses,
+        gameOver: gameOver || wrongGuesses + 1 === maxWrongGuesses,
+        victory: victory || (remainingLetters.length === 1 && remainingLetters[0] === letter),
+        timerEnabled,
+        timerDuration,
+        timeLeft
+      });
+    }
   };
+  
 
   const resetGame = () => {
     setGuesses([]);
