@@ -1,10 +1,9 @@
-// src/components/Game.js
-
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { db, auth } from '../firebaseConfig';
-import { doc, getDoc, setDoc } from 'firebase/firestore';  // Importar funciones Firestore
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { onAuthStateChanged } from 'firebase/auth';
+import axios from 'axios';
 
 const Game = () => {
   const navigate = useNavigate();
@@ -13,23 +12,45 @@ const Game = () => {
     guessedLetters: [],
     wrongGuesses: 0,
     maxGuesses: 10,
-    gameOver: false
+    gameOver: false,
+    victory: false
   });
+  const [loading, setLoading] = useState(true);
 
   // Función para cargar el estado del juego desde Firestore
   const loadGameState = async (userId) => {
     const gameRef = doc(db, "games", userId);
     const gameSnapshot = await getDoc(gameRef);
-    
+
     if (gameSnapshot.exists()) {
       setGameState(gameSnapshot.data());
+    } else {
+      // Si no existe un estado guardado, obtener una nueva palabra
+      await fetchNewWord();
     }
+
+    setLoading(false);  // Marcamos que terminó de cargar
   };
 
   // Función para guardar el estado del juego en Firestore
   const saveGameState = async (userId, state) => {
-    const gameRef = doc(db, "games", userId);
-    await setDoc(gameRef, state);
+    if (!state.gameOver) {  // Solo guardar si el juego NO ha terminado
+      const gameRef = doc(db, "games", userId);
+      await setDoc(gameRef, state);
+    }
+  };
+
+  // Función para obtener una nueva palabra de la API
+  const fetchNewWord = async () => {
+    try {
+      const response = await axios.get('https://random-word-api.vercel.app/api?number=1');
+      setGameState((prevState) => ({
+        ...prevState,
+        word: response.data[0].toUpperCase(),
+      }));
+    } catch (error) {
+      console.error("Error fetching word: ", error);
+    }
   };
 
   useEffect(() => {
@@ -50,20 +71,48 @@ const Game = () => {
     return () => unsubscribe();  // Limpiar el listener al desmontar el componente
   }, [navigate]);
 
-  // Simular que el estado cambia con cada jugada, aquí debes añadir tu lógica
+  // Función que maneja cuando el usuario hace una jugada
   const handleGuess = (letter) => {
+    if (gameState.gameOver) return; // No hacer nada si el juego ya terminó
+
     const updatedGameState = {
       ...gameState,
       guessedLetters: [...gameState.guessedLetters, letter],
-      wrongGuesses: gameState.wrongGuesses + 1 // Esto es solo un ejemplo, ajusta según tu lógica de juego
+      wrongGuesses: gameState.word.includes(letter) ? gameState.wrongGuesses : gameState.wrongGuesses + 1
     };
 
-    setGameState(updatedGameState);
+    // Comprobar si el juego ha terminado
+    const isVictory = updatedGameState.word.split("").every((char) => updatedGameState.guessedLetters.includes(char));
+    const isGameOver = updatedGameState.wrongGuesses >= gameState.maxGuesses;
 
-    // Guardar el estado del juego en Firestore después de cada cambio
-    const userId = auth.currentUser.uid;
-    saveGameState(userId, updatedGameState);
+    setGameState({
+      ...updatedGameState,
+      gameOver: isGameOver || isVictory,
+      victory: isVictory
+    });
+
+    if (!isGameOver && !isVictory) {  // Solo guardar si el juego sigue en progreso
+      const userId = auth.currentUser.uid;
+      saveGameState(userId, updatedGameState);
+    }
   };
+
+  // Función para reiniciar el juego (obtener nueva palabra y resetear estado)
+  const resetGame = async () => {
+    await fetchNewWord();  // Obtener una nueva palabra
+    setGameState({
+      word: "",
+      guessedLetters: [],
+      wrongGuesses: 0,
+      maxGuesses: 10,
+      gameOver: false,
+      victory: false
+    });
+  };
+
+  if (loading) {
+    return <div>Loading...</div>;  // Mostrar mientras carga el estado del juego
+  }
 
   return (
     <div>
@@ -74,10 +123,20 @@ const Game = () => {
       <p>Errores: {gameState.wrongGuesses} / {gameState.maxGuesses}</p>
       
       {/* Botones de ejemplo para adivinar letras */}
-      <button onClick={() => handleGuess("A")}>Adivinar A</button>
-      <button onClick={() => handleGuess("B")}>Adivinar B</button>
+      {!gameState.gameOver && (
+        <>
+          <button onClick={() => handleGuess("A")}>Adivinar A</button>
+          <button onClick={() => handleGuess("B")}>Adivinar B</button>
+        </>
+      )}
 
-      {/* Resto del contenido */}
+      {/* Mostrar mensaje de victoria o derrota */}
+      {gameState.gameOver && (
+        <div>
+          {gameState.victory ? <p>¡Felicidades, ganaste!</p> : <p>¡Perdiste! La palabra era {gameState.word}.</p>}
+          <button onClick={resetGame}>Jugar de nuevo</button>  {/* Al presionar, reinicia el juego */}
+        </div>
+      )}
     </div>
   );
 };

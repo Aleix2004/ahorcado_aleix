@@ -39,11 +39,11 @@ const Hangman = () => {
     try {
       const gameRef = doc(db, 'games', userId);
       const gameSnapshot = await getDoc(gameRef);
-
+  
       if (gameSnapshot.exists()) {
         const savedState = gameSnapshot.data();
         setDifficulty(savedState.difficulty);
-        setWord(savedState.word);
+        setWord(savedState.word);  // Cargar la palabra guardada
         setGuesses(savedState.guesses);
         setWrongGuesses(savedState.wrongGuesses);
         setMaxWrongGuesses(savedState.maxWrongGuesses);
@@ -52,7 +52,7 @@ const Hangman = () => {
         setTimerEnabled(savedState.timerEnabled);
         setTimerDuration(savedState.timerDuration);
         setTimeLeft(savedState.timeLeft);
-        console.log("Estado del juego cargado desde Firestore:", savedState);
+        setLoading(false);  // Dejar de cargar
       } else {
         console.log("No se encontró un estado guardado.");
       }
@@ -60,24 +60,25 @@ const Hangman = () => {
       console.error("Error al cargar el estado del juego:", error);
     }
   };
+  
 
   // Escuchar cambios de autenticación y cargar el estado del juego
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         console.log("Usuario autenticado:", user.uid);
-        loadGameState(user.uid);
+        loadGameState(user.uid);  // Cargar el estado guardado (incluyendo la palabra)
       } else {
         console.log("No hay usuario autenticado.");
       }
     });
-
+  
     return () => unsubscribe();
   }, []);
 
   useEffect(() => {
-    if (!difficulty) return;
-
+    if (!difficulty || word) return;  // No vuelvas a obtener la palabra si ya existe una guardada
+  
     switch (difficulty) {
       case 'easy':
         setMaxWrongGuesses(10);
@@ -91,7 +92,7 @@ const Hangman = () => {
       default:
         setMaxWrongGuesses(7);
     }
-
+  
     const fetchWord = async () => {
       try {
         const response = await axios.get('https://random-word-api.vercel.app/api?number=1');
@@ -102,10 +103,13 @@ const Hangman = () => {
         setLoading(false);
       }
     };
-
-    fetchWord();
+  
+    if (!word) {  // Solo busca una nueva palabra si no hay una palabra existente
+      fetchWord();
+    }
+  
   }, [difficulty]);
-
+  
   useEffect(() => {
     if (timerEnabled && !gameOver) {
       setTimeLeft(timerDuration);
@@ -124,8 +128,7 @@ const Hangman = () => {
 
   const handleGuess = (letter) => {
     if (gameOver) return;
-  
-    // Definimos remainingLetters antes de los condicionales
+    
     const remainingLetters = word.split('').filter(l => !guesses.includes(l));
   
     if (word.includes(letter)) {
@@ -149,9 +152,9 @@ const Hangman = () => {
     if (userId) {
       saveGameState(userId, {
         difficulty,
-        word,
+        word,  // Guardar la palabra actual
         guesses: [...guesses, letter],
-        wrongGuesses: wrongGuesses + 1,
+        wrongGuesses: word.includes(letter) ? wrongGuesses : wrongGuesses + 1,
         maxWrongGuesses,
         gameOver: gameOver || wrongGuesses + 1 === maxWrongGuesses,
         victory: victory || (remainingLetters.length === 1 && remainingLetters[0] === letter),
@@ -162,8 +165,9 @@ const Hangman = () => {
     }
   };
   
+  
 
-  const resetGame = () => {
+  const resetGame = async () => {
     setGuesses([]);
     setWrongGuesses(0);
     setLoading(true);
@@ -171,19 +175,39 @@ const Hangman = () => {
     setGameOver(false);
     setVictory(false);
     setDifficulty('');
-
+    
+    // Solo pedimos una nueva palabra al reiniciar el juego
     const fetchWord = async () => {
       try {
         const response = await axios.get('https://random-word-api.vercel.app/api?number=1');
-        setWord(response.data[0].toUpperCase());
+        const newWord = response.data[0].toUpperCase();
+        setWord(newWord);
+        
+        // Guardar el nuevo estado del juego en Firestore
+        const userId = auth.currentUser?.uid;
+        if (userId) {
+          await saveGameState(userId, {
+            difficulty,
+            word: newWord,  // Guardar la nueva palabra
+            guesses: [],
+            wrongGuesses: 0,
+            maxWrongGuesses,
+            gameOver: false,
+            victory: false,
+            timerEnabled,
+            timerDuration,
+            timeLeft
+          });
+        }
+        
         setLoading(false);
       } catch (error) {
         setError('Failed to fetch word from API');
         setLoading(false);
       }
     };
-
-    fetchWord();
+  
+    fetchWord();  // Pedimos la palabra nueva solo al reiniciar
   };
 
   if (!difficulty) {
