@@ -230,7 +230,7 @@ const Hangman = () => {
 
   return (
     <div className="hangman">
-      <h1>Juego del ahorcado</h1>
+      <h1>Hangman game</h1>
       <div className="word-and-drawing">
         <Word word={word} guesses={guesses} />
         <HangmanDrawing wrongGuesses={wrongGuesses} maxWrongGuesses={maxWrongGuesses} />
@@ -244,8 +244,8 @@ const Hangman = () => {
       )}
       {gameOver && (
         <div className="game-over">
-          {victory ? <p>¡Felicidades, ganaste!</p> : <p>¡Perdiste! La palabra era {word}.</p>}
-          <button onClick={resetGame}>Jugar de nuevo</button>
+          {victory ? <p>¡Congratulactions you won!</p> : <p>¡Bruh! The word was {word}.</p>}
+          <button onClick={resetGame}>Play again</button>
         </div>
       )}
     </div>
