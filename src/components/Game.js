@@ -34,11 +34,15 @@ const Game = () => {
 
   // Función para guardar el estado del juego en Firestore
   const saveGameState = async (userId, state) => {
-    if (!state.gameOver) {  // Solo guardar si el juego NO ha terminado
-      const gameRef = doc(db, "games", userId);
+    try {
+      const gameRef = doc(db, 'games', userId);
       await setDoc(gameRef, state);
+      console.log("Estado del juego guardado:", state);
+    } catch (error) {
+      console.error("Error al guardar el estado del juego:", error);
     }
   };
+  
 
   // Función para obtener una nueva palabra de la API
   const fetchNewWord = async () => {

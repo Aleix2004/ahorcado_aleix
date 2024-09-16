@@ -77,7 +77,7 @@ const Hangman = () => {
   }, []);
 
   useEffect(() => {
-    if (!difficulty || word) return;  // No vuelvas a obtener la palabra si ya existe una guardada
+    if (!difficulty) return; // Asegúrate de que se haya seleccionado una dificultad
   
     switch (difficulty) {
       case 'easy':
@@ -90,7 +90,7 @@ const Hangman = () => {
         setMaxWrongGuesses(5);
         break;
       default:
-        setMaxWrongGuesses(7);
+        setMaxWrongGuesses(7); // Establece un valor predeterminado si ocurre un error
     }
   
     const fetchWord = async () => {
