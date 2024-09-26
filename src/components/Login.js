@@ -33,7 +33,7 @@ const Login = () => {
       // Obtener el documento del usuario en Firestore
       const userDoc = await getDoc(doc(db, "users", user.uid));
 
-    
+
       if (userDoc.exists()) {
         const userData = userDoc.data();
         alert(`Bienvenido, ${userData.username}!`);
@@ -108,14 +108,16 @@ const Login = () => {
             </Button>
             <Grid container>
               <Grid item xs>
-                <Link href="#" variant="body2">
+                {/* <Link href="#" variant="body2">
                   Forgot password?
-                </Link>
+                </Link> */}
               </Grid>
-              <Grid item>
-                <Link href="/register" variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Link>
+              <Grid container justifyContent="center">
+                <Grid item>
+                  <Link className="boton_sign_up" href="/register" variant="body2">
+                    {"Don't have an account? Sign Up"}
+                  </Link>
+                </Grid>
               </Grid>
             </Grid>
           </Box>

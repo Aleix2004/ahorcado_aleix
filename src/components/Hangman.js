@@ -67,7 +67,6 @@ const Hangman = () => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         console.log("Usuario autenticado:", user.uid);
-        
         loadGameState(user.uid);  // Cargar el estado guardado (incluyendo la palabra)
       } else {
         console.log("No hay usuario autenticado.");

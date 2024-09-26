@@ -147,13 +147,13 @@ const Register = () => {
             >
               Sign Up
             </Button>
-            <Grid container>
-              <Grid item>
-                <Link href="/login" variant="body2">
-                  {"Already have an account? Sign in"}
-                </Link>
+            <Grid container justifyContent="center">
+                <Grid item>
+                  <Link className="boton_sign_in" href="/login" variant="body2">
+                    {"Already have an account? Sign in"}
+                  </Link>
+                </Grid>
               </Grid>
-            </Grid>
           </Box>
         </Box>
       </motion.div>
